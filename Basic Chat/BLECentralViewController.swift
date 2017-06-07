@@ -17,7 +17,7 @@ var blePeripheral : CBPeripheral?
 var characteristicASCIIValue = NSString()
 var textArray = [String]()
 
-
+//Change
 
 class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate, UITableViewDelegate, UITableViewDataSource{
 
