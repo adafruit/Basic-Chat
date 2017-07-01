@@ -23,7 +23,7 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
 
     //Data
     var centralManager : CBCentralManager!
-    var bleService : CBService?
+    //var bleService : CBService?
     var RSSIs = [NSNumber]()
     var data = NSMutableData()
     var writeData: String = ""
@@ -200,7 +200,7 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
         for service in services {
             
             peripheral.discoverCharacteristics(nil, for: service)
-            bleService = service
+           // bleService = service
         }
         print("Discovered Services: \(services)")
     }
@@ -209,6 +209,7 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
      Invoked when you discover the characteristics of a specified service.
      This method is invoked when your app calls the discoverCharacteristics(_:for:) method. If the characteristics of the specified service are successfully discovered, you can access them through the service's characteristics property. If successful, the error parameter is nil. If unsuccessful, the error parameter returns the cause of the failure.
      */
+    
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
        
         print("*******************************************************")

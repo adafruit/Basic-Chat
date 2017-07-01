@@ -116,12 +116,13 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     
     // Write functions
     func writeValue(data: String){
-            let data = (data as NSString).data(using: String.Encoding.utf8.rawValue)
+            let valueString = (data as NSString).data(using: String.Encoding.utf8.rawValue)
+        //change the "data" to valueString
             if let blePeripheral = blePeripheral{
         
                 if let txCharacteristic = txCharacteristic {
             
-                    blePeripheral.writeValue(data!, for: txCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                    blePeripheral.writeValue(valueString!, for: txCharacteristic, type: CBCharacteristicWriteType.withResponse)
             }
         }
     }
