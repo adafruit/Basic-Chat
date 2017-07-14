@@ -24,17 +24,8 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     //Data
     var peripheralManager: CBPeripheralManager?
     var peripheral: CBPeripheral!
-    private var blueFontDict:NSDictionary!
     private var consoleAsciiText:NSAttributedString? = NSAttributedString(string: "")
-    var transferChar: CBMutableCharacteristic?
-    var sendingData = false
-    var currentText = ""
-    var dataToTransmit: Data?
-    var sendDataIndex = 0
-    let EOM = "End Of Message"
-    var outgoingArray = [characteristicASCIIValue]
-    let TxMaxCharacters = 20
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"Back", style:.plain, target:nil, action:nil)
@@ -55,9 +46,6 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         updateIncomingData()
     }
    
-    
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         self.baseTextView.text = ""
       
@@ -67,10 +55,10 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         peripheralManager?.stopAdvertising()
         self.peripheralManager = nil
         super.viewDidDisappear(animated)
+        
     }
     
-    // MARK: Data Transfer Methods
-    func updateIncomingData (){
+    func updateIncomingData () {
      NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Notify"), object: nil , queue: nil){
      notification in
      let appendString = "\n"
@@ -87,30 +75,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
      
      }
  }
-    
-    
-    
-    
-    /*
-    COME BACK TO THIS
-     
-     func updateConsole(asciiText: NSAttributedString){
-     consoleAsciiText = asciiText
-     baseTextView.attributedText = consoleAsciiText
-     }
-   */
-    @IBOutlet weak var toggleButton: UIButton!
-    
-    @IBAction func toggleOn(_ sender: Any) {
-    writeCharacteristic(val: 1)
-    }  
-    
-    @IBAction func toggleOff(_ sender: Any) {
-    writeCharacteristic(val: 0)
-    }
 
-    
-    
     @IBAction func clickSendAction(_ sender: AnyObject) {
     outgoingData()
         
