@@ -54,19 +54,58 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         //-Notification for updating the text view with incoming text
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Notify"), object: nil , queue: nil){
             notification in
+            let appendString = "\n"
             let myFont = UIFont(name: "Helvetica Neue", size: 18.0)
             let myAttributes2 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.red]
 
             
+            let attribString = NSAttributedString(string: (characteristicASCIIValue as String) + appendString, attributes: myAttributes2)
+            
+            let newAsciiText = NSMutableAttributedString(attributedString: self.consoleAsciiText!)
+            
+            
+            
+            
+            
             self.baseTextView.attributedText = NSAttributedString(string: characteristicASCIIValue as String , attributes: myAttributes2)
             
-            self.baseTextView.text = "Recv: \(characteristicASCIIValue)"
+          //  self.baseTextView.text = "Recv: \(characteristicASCIIValue)"
             
+            newAsciiText.append(attribString)
+            
+            self.consoleAsciiText = newAsciiText
+            
+            self.baseTextView.attributedText = self.consoleAsciiText
+            
+            /*
+             
+             
+             let inputText = inputTextField.text
+             
+             let myFont = UIFont(name: "Helvetica Neue", size: 15.0)
+             let myAttributes1 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.blue]
+             
+             writeValue(data: inputText!)
+             
+             
+             )
+             
+             
+             
+             
+             
+             //erase what's in the text field
+             inputTextField.text = ""
+
+ */
             
            
         }
     }
    
+    
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         self.baseTextView.text = ""
         dataBuffer = NSMutableData()
@@ -77,19 +116,50 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         self.peripheralManager = nil
         super.viewDidDisappear(animated)
     }
-    
+    /*
     // MARK: Data Transfer Methods
-    func updateTextView (){
-        let appendString = ""
-        let attributedStr = NSMutableAttributedString(string: (characteristicASCIIValue as String) + appendString)
-        let textViewStr = "\(attributedStr)"
-        baseTextView.text = "\(textViewStr)\n"
+    func updateIncomingData (){
+        //-Notification for updating the text view with incoming text
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Notify"), object: nil , queue: nil){
             notification in
-            self.baseTextView.text = (((characteristicASCIIValue) as String) + appendString)
+            let appendString = "\n"
+            let myFont = UIFont(name: "Helvetica Neue", size: 18.0)
+            let myAttributes2 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.red]
+            
+            
+            self.baseTextView.attributedText = NSAttributedString(string: characteristicASCIIValue as String , attributes: myAttributes2)
+            
+            self.baseTextView.text = "Recv: \(characteristicASCIIValue)"
+            
+            
+     
+             
+             
+             let inputText = inputTextField.text
+             
+             let myFont = UIFont(name: "Helvetica Neue", size: 15.0)
+             let myAttributes1 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.blue]
+             
+             writeValue(data: inputText!)
+             
+             
+             let attribString = NSAttributedString(string: inputText! + appendString, attributes: myAttributes1)
+             let newAsciiText = NSMutableAttributedString(attributedString: self.consoleAsciiText!)
+             newAsciiText.append(attribString)
+             
+             consoleAsciiText = newAsciiText
+             baseTextView.attributedText = consoleAsciiText
+             //erase what's in the text field
+             inputTextField.text = ""
+             
+     
+            
+            
         }
+        
+        
     }
-  
+  */
     /*
     COME BACK TO THIS
      
@@ -108,41 +178,28 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     writeCharacteristic(val: 0)
     }
 
+    
+    
     @IBAction func clickSendAction(_ sender: AnyObject) {
       
-        let appendString = ""
+        let appendString = "\n"
         
-        
-        let text = inputTextField.text
+        let inputText = inputTextField.text
      
-        let myFont = UIFont(name: "Helvetica Neue", size: 18.0)
-      //  let attrAString = NSAttributedString(string: ((text! as String)+appendString), attributes: self.redFontDict as? [String : AnyObject])
+        let myFont = UIFont(name: "Helvetica Neue", size: 15.0)
         let myAttributes1 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.blue]
        
-        var newText = text
-        
-        writeValue(data: newText!)
+        writeValue(data: inputText!)
         
         
-        inputTextField.text = ""
-        updateTextView()
-        
-        self.baseTextView.attributedText = NSAttributedString(string: text! + appendString , attributes: myAttributes1)
-       
+        let attribString = NSAttributedString(string: inputText! + appendString, attributes: myAttributes1)
         let newAsciiText = NSMutableAttributedString(attributedString: self.consoleAsciiText!)
+        newAsciiText.append(attribString)
         
-        newAsciiText.setAttributedString(self.baseTextView.attributedText)
-      
-       // if let textStorage = self.baseTextView.textStorage, let attributedString = NSAttributedString {
-           // textStorage.appendAttributedString(self.baseTextView.attributedText)
-        
-    
-        
-        
-        if inputTextField.text == "" {
-            textArray.append(text!)
-        }
-        
+        consoleAsciiText = newAsciiText
+        baseTextView.attributedText = consoleAsciiText
+        //erase what's in the text field
+        inputTextField.text = ""
         
     }
     
