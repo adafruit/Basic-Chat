@@ -26,7 +26,6 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     var peripheral: CBPeripheral!
     private var blueFontDict:NSDictionary!
     private var consoleAsciiText:NSAttributedString? = NSAttributedString(string: "")
-    var dataBuffer = NSMutableData()
     var transferChar: CBMutableCharacteristic?
     var sendingData = false
     var currentText = ""
@@ -45,6 +44,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         self.baseTextView.layer.borderWidth = 3.0
         self.baseTextView.layer.borderColor = UIColor.blue.cgColor
         self.baseTextView.layer.cornerRadius = 3.0
+        self.baseTextView.text = ""
         //Input Text Field setup
         self.inputTextField.layer.borderWidth = 2.0
         self.inputTextField.layer.borderColor = UIColor.blue.cgColor
@@ -52,55 +52,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         //Create and start the peripheral manager
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         //-Notification for updating the text view with incoming text
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Notify"), object: nil , queue: nil){
-            notification in
-            let appendString = "\n"
-            let myFont = UIFont(name: "Helvetica Neue", size: 18.0)
-            let myAttributes2 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.red]
-
-            
-            let attribString = NSAttributedString(string: (characteristicASCIIValue as String) + appendString, attributes: myAttributes2)
-            
-            let newAsciiText = NSMutableAttributedString(attributedString: self.consoleAsciiText!)
-            
-            
-            
-            
-            
-            self.baseTextView.attributedText = NSAttributedString(string: characteristicASCIIValue as String , attributes: myAttributes2)
-            
-          //  self.baseTextView.text = "Recv: \(characteristicASCIIValue)"
-            
-            newAsciiText.append(attribString)
-            
-            self.consoleAsciiText = newAsciiText
-            
-            self.baseTextView.attributedText = self.consoleAsciiText
-            
-            /*
-             
-             
-             let inputText = inputTextField.text
-             
-             let myFont = UIFont(name: "Helvetica Neue", size: 15.0)
-             let myAttributes1 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.blue]
-             
-             writeValue(data: inputText!)
-             
-             
-             )
-             
-             
-             
-             
-             
-             //erase what's in the text field
-             inputTextField.text = ""
-
- */
-            
-           
-        }
+        updateIncomingData()
     }
    
     
@@ -108,7 +60,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     
     override func viewDidAppear(_ animated: Bool) {
         self.baseTextView.text = ""
-        dataBuffer = NSMutableData()
+      
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -116,50 +68,29 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         self.peripheralManager = nil
         super.viewDidDisappear(animated)
     }
-    /*
+    
     // MARK: Data Transfer Methods
     func updateIncomingData (){
-        //-Notification for updating the text view with incoming text
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Notify"), object: nil , queue: nil){
-            notification in
-            let appendString = "\n"
-            let myFont = UIFont(name: "Helvetica Neue", size: 18.0)
-            let myAttributes2 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.red]
-            
-            
-            self.baseTextView.attributedText = NSAttributedString(string: characteristicASCIIValue as String , attributes: myAttributes2)
-            
-            self.baseTextView.text = "Recv: \(characteristicASCIIValue)"
-            
-            
+     NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Notify"), object: nil , queue: nil){
+     notification in
+     let appendString = "\n"
+     let myFont = UIFont(name: "Helvetica Neue", size: 15.0)
+     let myAttributes2 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.red]
+     let attribString = NSAttributedString(string: "[Incoming]: " + (characteristicASCIIValue as String) + appendString, attributes: myAttributes2)
+     let newAsciiText = NSMutableAttributedString(attributedString: self.consoleAsciiText!)
+     self.baseTextView.attributedText = NSAttributedString(string: characteristicASCIIValue as String , attributes: myAttributes2)
      
-             
-             
-             let inputText = inputTextField.text
-             
-             let myFont = UIFont(name: "Helvetica Neue", size: 15.0)
-             let myAttributes1 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.blue]
-             
-             writeValue(data: inputText!)
-             
-             
-             let attribString = NSAttributedString(string: inputText! + appendString, attributes: myAttributes1)
-             let newAsciiText = NSMutableAttributedString(attributedString: self.consoleAsciiText!)
-             newAsciiText.append(attribString)
-             
-             consoleAsciiText = newAsciiText
-             baseTextView.attributedText = consoleAsciiText
-             //erase what's in the text field
-             inputTextField.text = ""
-             
+     newAsciiText.append(attribString)
      
-            
-            
-        }
-        
-        
-    }
-  */
+     self.consoleAsciiText = newAsciiText
+     self.baseTextView.attributedText = self.consoleAsciiText
+     
+     }
+ }
+    
+    
+    
+    
     /*
     COME BACK TO THIS
      
@@ -168,7 +99,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
      baseTextView.attributedText = consoleAsciiText
      }
    */
-   @IBOutlet weak var toggleButton: UIButton!
+    @IBOutlet weak var toggleButton: UIButton!
     
     @IBAction func toggleOn(_ sender: Any) {
     writeCharacteristic(val: 1)
@@ -181,18 +112,24 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     
     
     @IBAction func clickSendAction(_ sender: AnyObject) {
-      
+    outgoingData()
+        
+    }
+    
+    
+    
+    func outgoingData () {
         let appendString = "\n"
         
         let inputText = inputTextField.text
-     
+        
         let myFont = UIFont(name: "Helvetica Neue", size: 15.0)
         let myAttributes1 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.blue]
-       
+        
         writeValue(data: inputText!)
         
         
-        let attribString = NSAttributedString(string: inputText! + appendString, attributes: myAttributes1)
+        let attribString = NSAttributedString(string: "[Outgoing]: " + inputText! + appendString, attributes: myAttributes1)
         let newAsciiText = NSMutableAttributedString(attributedString: self.consoleAsciiText!)
         newAsciiText.append(attribString)
         
@@ -201,8 +138,8 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         //erase what's in the text field
         inputTextField.text = ""
         
+
     }
-    
     
     // Write functions
     func writeValue(data: String){
@@ -276,6 +213,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        outgoingData()
         return(true)
     }
     
