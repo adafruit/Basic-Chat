@@ -119,7 +119,7 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
         self.baseTableView.reloadData()
         if blePeripheral == nil {
             print("Found new pheripheral devices with services")
-            print("Peripheral name: \(peripheral.name)")
+            print("Peripheral name: \(String(describing: peripheral.name))")
             print("**********************************")
             print ("Advertisement Data : \(advertisementData)")
             blePeripheral = peripheral
@@ -141,7 +141,7 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("*****************************")
         print("Connection complete")
-        print("Peripheral info: \(blePeripheral)")
+        print("Peripheral info: \(String(describing: blePeripheral))")
         
         //Stop Scan- We don't need to scan once we've connected to a peripheral. We got what we came for.
         centralManager?.stopScan()
@@ -274,9 +274,9 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
             
             for x in characteristic.descriptors!{
                     let descript = x as CBDescriptor!
-                    print("function name: DidDiscoverDescriptorForChar \(descript?.description)")
-                print("Rx Value \(rxCharacteristic?.value)")
-                    print("Tx Value \(txCharacteristic?.value)")
+                    print("function name: DidDiscoverDescriptorForChar \(String(describing: descript?.description))")
+                print("Rx Value \(String(describing: rxCharacteristic?.value))")
+                    print("Tx Value \(String(describing: txCharacteristic?.value))")
                 }
             }
         }
@@ -292,7 +292,7 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
         print("*******************************************************")
 
         if (error != nil) {
-            print("Error changing notification state:\(error?.localizedDescription)")
+            print("Error changing notification state:\(String(describing: error?.localizedDescription))")
        
         } else {
             print("Characteristic's value subscribed")

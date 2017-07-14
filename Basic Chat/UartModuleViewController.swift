@@ -54,7 +54,16 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         //-Notification for updating the text view with incoming text
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "Notify"), object: nil , queue: nil){
             notification in
-           self.baseTextView.text = "\(characteristicASCIIValue)"
+            let myFont = UIFont(name: "Helvetica Neue", size: 18.0)
+            let myAttributes2 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.red]
+
+            
+            self.baseTextView.attributedText = NSAttributedString(string: characteristicASCIIValue as String , attributes: myAttributes2)
+            
+            self.baseTextView.text = "Recv: \(characteristicASCIIValue)"
+            
+            
+           
         }
     }
    
@@ -100,19 +109,43 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     }
 
     @IBAction func clickSendAction(_ sender: AnyObject) {
-        let text = inputTextField.text != nil ? inputTextField.text! : ""
-    //  self.baseTextView.text = "Sent: \(newText)"
+      
+        let appendString = ""
+        
+        
+        let text = inputTextField.text
+     
+        let myFont = UIFont(name: "Helvetica Neue", size: 18.0)
+      //  let attrAString = NSAttributedString(string: ((text! as String)+appendString), attributes: self.redFontDict as? [String : AnyObject])
+        let myAttributes1 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.blue]
+       
         var newText = text
-        writeValue(data: newText)
+        
+        writeValue(data: newText!)
+        
         
         inputTextField.text = ""
         updateTextView()
+        
+        self.baseTextView.attributedText = NSAttributedString(string: text! + appendString , attributes: myAttributes1)
        
+        let newAsciiText = NSMutableAttributedString(attributedString: self.consoleAsciiText!)
+        
+        newAsciiText.setAttributedString(self.baseTextView.attributedText)
+      
+       // if let textStorage = self.baseTextView.textStorage, let attributedString = NSAttributedString {
+           // textStorage.appendAttributedString(self.baseTextView.attributedText)
+        
+    
+        
+        
         if inputTextField.text == "" {
-            textArray.append(text)
+            textArray.append(text!)
         }
         
+        
     }
+    
     
     // Write functions
     func writeValue(data: String){
