@@ -29,11 +29,9 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
     var writeData: String = ""
     var peripherals = [CBPeripheral]()
     var characteristicValue = [CBUUID: NSData]()
-    var peripheralsUUIDsFound = NSMutableSet()
     var timer = Timer()
     var characteristics = [String : CBCharacteristic]()
-    let TxMaxCharacters = 20
-   
+    
    //UI
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var refreshButton: UIBarButtonItem!

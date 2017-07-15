@@ -48,6 +48,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
    
     override func viewDidAppear(_ animated: Bool) {
         self.baseTextView.text = ""
+        
       
     }
     
@@ -92,7 +93,6 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         let myAttributes1 = [NSFontAttributeName: myFont!, NSForegroundColorAttributeName: UIColor.blue]
         
         writeValue(data: inputText!)
-        
         
         let attribString = NSAttributedString(string: "[Outgoing]: " + inputText! + appendString, attributes: myAttributes1)
         let newAsciiText = NSMutableAttributedString(attributedString: self.consoleAsciiText!)
