@@ -25,7 +25,8 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     var peripheralManager: CBPeripheralManager?
     var peripheral: CBPeripheral!
     private var consoleAsciiText:NSAttributedString? = NSAttributedString(string: "")
-
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"Back", style:.plain, target:nil, action:nil)
@@ -56,6 +57,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         peripheralManager?.stopAdvertising()
         self.peripheralManager = nil
         super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
         
     }
     
@@ -103,7 +105,6 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
         //erase what's in the text field
         inputTextField.text = ""
         
-
     }
     
     // Write functions
@@ -111,9 +112,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
             let valueString = (data as NSString).data(using: String.Encoding.utf8.rawValue)
         //change the "data" to valueString
             if let blePeripheral = blePeripheral{
-        
                 if let txCharacteristic = txCharacteristic {
-            
                     blePeripheral.writeValue(valueString!, for: txCharacteristic, type: CBCharacteristicWriteType.withResponse)
             }
         }

@@ -15,15 +15,13 @@ var txCharacteristic : CBCharacteristic?
 var rxCharacteristic : CBCharacteristic?
 var blePeripheral : CBPeripheral?
 var characteristicASCIIValue = NSString()
-var textArray = [String]()
 
-//Change
+
 
 class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBPeripheralDelegate, UITableViewDelegate, UITableViewDataSource{
 
     //Data
     var centralManager : CBCentralManager!
-    //var bleService : CBService?
     var RSSIs = [NSNumber]()
     var data = NSMutableData()
     var writeData: String = ""
@@ -256,7 +254,7 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
                 characteristicASCIIValue = ASCIIstring
                 print("Value Recieved: \((characteristicASCIIValue as String))")
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: "Notify"), object: nil)
-
+                
             }
         }
     }
@@ -278,13 +276,6 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
                 }
             }
         }
-
-    func textFieldData(baseTextField: UITextField)->Bool {
-        writeData = baseTextField.text!
-        print("Output: \(writeData)")
-        baseTextField.resignFirstResponder()
-        return true
-    }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         print("*******************************************************")
