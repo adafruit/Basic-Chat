@@ -137,7 +137,7 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-      scrollView.setContentOffset(CGPoint(x:0, y:250), animated: true)
+      scrollView.setContentOffset(CGPoint(x:0, y:270), animated: true)
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
