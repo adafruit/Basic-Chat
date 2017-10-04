@@ -371,4 +371,4 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
         }
     }
 }
-
+//Changes
