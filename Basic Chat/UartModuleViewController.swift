@@ -190,4 +190,3 @@ class UartModuleViewController: UIViewController, CBPeripheralManagerDelegate, U
     }
 }
 
-//Changes
