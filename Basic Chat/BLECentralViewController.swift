@@ -75,7 +75,9 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
         print("Now Scanning...")
         self.timer.invalidate()
         centralManager?.scanForPeripherals(withServices: [BLEService_UUID] , options: [CBCentralManagerScanOptionAllowDuplicatesKey:false])
-        Timer.scheduledTimer(timeInterval: 17, target: self, selector: #selector(self.cancelScan), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(withTimeInterval: 17, repeats: false) {_ in 
+            self.cancelScan()
+        }
     }
     
     /*We also need to stop scanning at some point so we'll also create a function that calls "stopScan"*/
@@ -274,8 +276,8 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
         if ((characteristic.descriptors) != nil) {
             
             for x in characteristic.descriptors!{
-                let descript = x as CBDescriptor!
-                print("function name: DidDiscoverDescriptorForChar \(String(describing: descript?.description))")
+                let descript = x as CBDescriptor
+                print("function name: DidDiscoverDescriptorForChar \(String(describing: descript.description))")
                 print("Rx Value \(String(describing: rxCharacteristic?.value))")
                 print("Tx Value \(String(describing: txCharacteristic?.value))")
             }
@@ -362,8 +364,8 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
             //If Bluetooth is off, display a UI alert message saying "Bluetooth is not enable" and "Make sure that your bluetooth is turned on"
             print("Bluetooth Disabled- Make sure your Bluetooth is turned on")
             
-            let alertVC = UIAlertController(title: "Bluetooth is not enabled", message: "Make sure that your bluetooth is turned on", preferredStyle: UIAlertControllerStyle.alert)
-            let action = UIAlertAction(title: "ok", style: UIAlertActionStyle.default, handler: { (action: UIAlertAction) -> Void in
+            let alertVC = UIAlertController(title: "Bluetooth is not enabled", message: "Make sure that your bluetooth is turned on", preferredStyle: UIAlertController.Style.alert)
+            let action = UIAlertAction(title: "ok", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction) -> Void in
                 self.dismiss(animated: true, completion: nil)
             })
             alertVC.addAction(action)

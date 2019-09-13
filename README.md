@@ -1,3 +1,4 @@
 # Basic-Chat
-Bluetooth Low Energy App for iOS using Swift.
-Looking to learn how Bluetooth Low Energy works in iOS & Swift 3? Well look no farther, we've got what you've been waiting for!
+Bluetooth Low Energy App for iOS using Swift 5 to communicate with another device that implements the Nordic UART Service.
+
+This sample project is the source for [this tutorial](https://learn.adafruit.com/crack-the-code/overview). It is not meant to cover product ready iOS development. It is only an introduction to BLE and iOS.
