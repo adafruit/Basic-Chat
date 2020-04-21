@@ -249,20 +249,19 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
         }
     }
     
-    // Getting Values From Characteristic
-    
-    /*After you've found a characteristic of a service that you are interested in, you can read the characteristic's value by calling the peripheral "readValueForCharacteristic" method within the "didDiscoverCharacteristicsFor service" delegate.
+    // MARK: - Getting Values From Characteristic
+    /** After you've found a characteristic of a service that you are interested in, you can read the characteristic's value by calling the peripheral "readValueForCharacteristic" method within the "didDiscoverCharacteristicsFor service" delegate.
      */
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        guard characteristic == rxCharacteristic,
+            let characteristicValue = characteristic.value,
+            let ASCIIstring = NSString(data: characteristicValue,
+                                       encoding: String.Encoding.utf8.rawValue)
+            else { return }
         
-        if characteristic == rxCharacteristic {
-            if let ASCIIstring = NSString(data: characteristic.value!, encoding: String.Encoding.utf8.rawValue) {
-                characteristicASCIIValue = ASCIIstring
-                print("Value Recieved: \((characteristicASCIIValue as String))")
-                NotificationCenter.default.post(name:NSNotification.Name(rawValue: "Notify"), object: nil)
-                
-            }
-        }
+        characteristicASCIIValue = ASCIIstring
+        print("Value Recieved: \((characteristicASCIIValue as String))")
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: "Notify"), object: self)
     }
     
     
@@ -273,14 +272,13 @@ class BLECentralViewController : UIViewController, CBCentralManagerDelegate, CBP
             print("\(error.debugDescription)")
             return
         }
-        if ((characteristic.descriptors) != nil) {
+        guard let descriptors = characteristic.descriptors else { return }
             
-            for x in characteristic.descriptors!{
-                let descript = x as CBDescriptor
-                print("function name: DidDiscoverDescriptorForChar \(String(describing: descript.description))")
-                print("Rx Value \(String(describing: rxCharacteristic?.value))")
-                print("Tx Value \(String(describing: txCharacteristic?.value))")
-            }
+        descriptors.forEach { descript in
+            print("function name: DidDiscoverDescriptorForChar \(String(describing: descript.description))")
+            print("Rx Value \(String(describing: rxCharacteristic?.value))")
+            print("Tx Value \(String(describing: txCharacteristic?.value))")
+
         }
     }
     
