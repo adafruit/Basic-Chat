@@ -1,17 +1,18 @@
 //
-//  UArtTableViewCell.swift
-//  Basic Chat
+//  TableViewCell.swift
+//  Basic Chat MVC
 //
-//  Created by Trevor Beaton on 2/16/17.
-//  Copyright © 2017 Vanguard Logic LLC. All rights reserved.
+//  Created by Trevor Beaton on 2/4/21.
 //
 
 import UIKit
 
-class UArtTableViewCell: UITableViewCell {
-    
-    
-    @IBOutlet weak var dataLabel: UILabel!
+class TableViewCell: UITableViewCell {
+
+    @IBOutlet weak var peripheralLabel: UILabel!
+    @IBOutlet weak var rssiLabel: UILabel!
+
+
 
     override func awakeFromNib() {
         super.awakeFromNib()
