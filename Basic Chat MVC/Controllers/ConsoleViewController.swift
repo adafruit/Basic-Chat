@@ -85,7 +85,7 @@ class ConsoleViewController: UIViewController {
   }
 
   // Write functions
-  func writeValue(data: String){
+  func writeOutgoingValue(data: String){
       let valueString = (data as NSString).data(using: String.Encoding.utf8.rawValue)
       //change the "data" to valueString
     if let blePeripheral = BlePeripheral.connectedPeripheral {
@@ -139,7 +139,7 @@ extension ConsoleViewController: UITextViewDelegate {
 extension ConsoleViewController: UITextFieldDelegate {
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    writeValue(data: textField.text ?? "")
+    writeOutgoingValue(data: textField.text ?? "")
     appendTxDataToTextView()
     textField.resignFirstResponder()
     textField.text = ""
